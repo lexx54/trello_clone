@@ -4,7 +4,7 @@ import { ColumnContainer, ColumnTitle } from "../styles"
 import { AddNewItem } from './AddNewItem'
 import { useAppState } from '../state/AppStateContext'
 import { Card } from './Card'
-import { addTask, moveList } from '../state/actions'
+import { addTask, moveList, moveTask, setDraggedItem } from '../state/actions'
 import { useItemDrag } from '../utils/useItemDrag';
 import { isHidden } from '../utils/isHidden'
 
@@ -21,13 +21,20 @@ export const Column = ({ text, id, isPreview }: ColumnProps) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const [, drop] = useDrop({
-    accept: 'COLUMN',
+    accept: ['COLUMN', 'CARD'],
     hover() {
       if (!draggedItem) return
       if (draggedItem.type === 'COLUMN') {
         if (draggedItem.id === id) return
 
         dispatch(moveList(draggedItem.id, id))
+      } else {
+        if (draggedItem.columnId === id) return
+        if (tasks.length) return
+        dispatch(
+          moveTask(draggedItem.id, null, draggedItem.columnId, id)
+        )
+        dispatch(setDraggedItem({ ...draggedItem, columnId: id }))
       }
     }
   })

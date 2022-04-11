@@ -4,15 +4,15 @@ import './index.css';
 import { App } from './App';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend';
-import { AppSateProvider } from './state/AppStateContext';
+import { AppStateProvider } from './state/AppStateContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppSateProvider>
+    <AppStateProvider>
       <DndProvider backend={Backend}>
         <App />
       </DndProvider>
-    </AppSateProvider>
+    </AppStateProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
